@@ -171,7 +171,7 @@ int LinuxParser::RunningProcesses() {
   string line, tmp, runProc;
   std::ifstream stream(kProcDirectory + kStatFilename);
   if (stream.is_open()) {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 14; i++) {
       std::getline(stream, line);
     }
     std::istringstream linestream(line);
