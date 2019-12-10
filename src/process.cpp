@@ -29,25 +29,7 @@ string Process::User() { return LinuxParser::User(Process::Pid()); }
 // Return the age of this process (in seconds)
 long int Process::UpTime() { return LinuxParser::UpTime(Process::Pid()); }
 
-bool Process::operator<(Process & a) { 
-    // Compare based on cpu usage
-    float cpu = CpuUtilization();
-    if (cpu < a.CpuUtilization()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+// Compare based on cpu usage
+bool Process::operator>(Process & a) { 
+    return CpuUtilization() > a.CpuUtilization();
 }
-
-// Overload the "less than" comparison operator for Process objects
-// bool Process::operator<(Process & a) { 
-//     // Compare based on memory usage
-//     string ram = Ram();
-//     if (std::stod(ram) < std::stod(a.Ram())) {
-//         return true;
-//     }
-//     else {
-//         return false;
-//     }
-// }

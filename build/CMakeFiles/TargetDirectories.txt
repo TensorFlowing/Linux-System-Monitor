@@ -1,3 +1,0 @@
-/home/abel/Desktop/udacity/Linux-System-Monitor/build/CMakeFiles/rebuild_cache.dir
-/home/abel/Desktop/udacity/Linux-System-Monitor/build/CMakeFiles/monitor.dir
-/home/abel/Desktop/udacity/Linux-System-Monitor/build/CMakeFiles/edit_cache.dir
