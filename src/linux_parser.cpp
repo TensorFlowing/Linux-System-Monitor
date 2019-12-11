@@ -235,32 +235,6 @@ string LinuxParser::Command(int pid) {
   return Command;  
 }
 
-// // Read and return the memory used by a process
-// string LinuxParser::Ram(int pid) { 
-//   string tmp;
-//   string line;
-//   string ram_kB;
-//   std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatusFilename);
-//   if (stream.is_open()) {
-//     while (std::getline(stream, line)) {
-//       std::istringstream linestream(line);
-//       linestream >> tmp;
-//       if (tmp=="VmSize:") {
-//         linestream >> ram_kB;
-//         break;
-//       }
-//     }
-//   }
-//   long ram_MB = 0;
-//   try {
-//     ram_MB = std::stol(ram_kB)/1000;
-//   }
-//   catch(const std::invalid_argument) {
-//     // std::cerr << "Invalid argument\n"; 
-//   }
-//   return std::to_string(ram_MB);
-// }
-
 // Read and return the memory used by a process
 string LinuxParser::Ram(int pid) { 
   string tmp;
@@ -268,17 +242,25 @@ string LinuxParser::Ram(int pid) {
   string ram_kB;
   std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatusFilename);
   if (stream.is_open()) {
-    for (int i = 0; i < 18; i++) {
-      std::getline(stream, line); 
+    while (std::getline(stream, line)) {
+      std::istringstream linestream(line);
+      linestream >> tmp;
+      if (tmp=="VmSize:") {
+        linestream >> ram_kB;
+        break;
+      }
     }
-    std::istringstream linestream(line);
-    linestream >> tmp;  // read "VmSize"
-    linestream >> ram_kB;
   }
-  // int ram_MB = std::stod(ram_kB)/1000;
-  // return std::to_string(ram_MB);
-  return ram_kB;
+  long ram_MB = 0;
+  try {
+    ram_MB = std::stol(ram_kB)/1000;
+  }
+  catch(const std::invalid_argument) {
+    std::cerr << "Invalid argument\n"; 
+  }
+  return std::to_string(ram_MB);
 }
+
 
 // Read and return the user ID associated with a process
 string LinuxParser::Uid(int pid) {
