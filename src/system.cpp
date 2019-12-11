@@ -1,6 +1,3 @@
-#include <unistd.h>
-#include <cstddef>
-#include <set>
 #include <string>
 #include <vector>
 
@@ -9,9 +6,6 @@
 #include "processor.h"
 #include "system.h"
 
-using std::set;
-using std::size_t;
-using std::string;
 using std::vector;
 
 // Return the system's CPU
@@ -19,17 +13,14 @@ Processor& System::Cpu() { return cpu_; }
 
 // Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
-  vector<int> vec_Pids = LinuxParser::Pids();
+  vector<int> pids = LinuxParser::Pids();
   processes_.clear();
-  for (int pid : vec_Pids) {
-    // Create new process and define the pid member variable
-    Process proc_tmp;
-    proc_tmp._Pid = pid;
-    // Fill in the member varables of each process
-    processes_.push_back(proc_tmp);
+  for (int pid : pids) {
+    Process proc_tmp(pid);
+    // proc_tmp._Pid = pid;
+    processes_.emplace_back(proc_tmp);
   }
-  std::sort(processes_.begin(), processes_.end()); 
-  std::reverse(processes_.begin(),processes_.end()); 
+  std::sort(processes_.begin(), processes_.end(), [](Process & a, Process & b){return (a>b);}); 
   return processes_;
 }
 
