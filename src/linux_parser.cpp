@@ -235,11 +235,13 @@ string LinuxParser::Command(int pid) {
   return Command;  
 }
 
+
 // Read and return the memory used by a process
 string LinuxParser::Ram(int pid) { 
   string tmp;
   string line;
   string ram_kB;
+  long ram_MB = 0;
   std::ifstream stream(kProcDirectory + std::to_string(pid) + kStatusFilename);
   if (stream.is_open()) {
     while (std::getline(stream, line)) {
@@ -250,16 +252,10 @@ string LinuxParser::Ram(int pid) {
       // VmSize gives the virtual memory used
       if (tmp=="VmData:") {
         linestream >> ram_kB;
+        ram_MB = std::stol(ram_kB)/1000;
         break;
       }
     }
-  }
-  long ram_MB = 0;
-  try {
-    ram_MB = std::stol(ram_kB)/1000;
-  }
-  catch(const std::invalid_argument &) {
-    ram_MB = 0; 
   }
   return std::to_string(ram_MB);
 }
